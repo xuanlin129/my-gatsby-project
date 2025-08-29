@@ -1,31 +1,31 @@
-name: Deploy to GitHub Pages
+name: Deploy Gatsby Site
 
 on:
   push:
     branches:
-      - main # 如果你主要分支是 main，否則改為 master 或其他
+      - main # 監控 main 分支，你可以改成 master 或其他
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source code
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: 18 # Gatsby 5/6 建議用 18
 
       - name: Install dependencies
         run: npm install
 
-      - name: Generate static site
-        run: npm run generate
+      - name: Build Gatsby site
+        run: npm run build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .output/public
+          publish_dir: ./public
